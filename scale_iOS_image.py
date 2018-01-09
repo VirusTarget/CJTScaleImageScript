@@ -9,26 +9,17 @@ import json
 
 # 扩展图片为1、2、3倍图
 def scale_image(file_name,file_type):
-	ori_img = Image.open(file_name + '.' + file_type)
-	ori_img = ori_img.convert("RGBA")
+    ori_img = Image.open(file_name + '.' + file_type)
+    ori_img = ori_img.convert("RGBA")
 
-	#一倍图
-	new_img = ori_img.resize((int(ori_img.width/2),int(ori_img.height/2)),Image.BILINEAR)
-	new_img.save(file_name + '@1x.' + file_type)
+    #一倍图
+    ori_img.resize((int(ori_img.width/2),int(ori_img.height/2)),Image.BILINEAR).save(file_name + '.' + file_type)
 
-	#三倍图
-	new_img = ori_img.resize((int(ori_img.width*1.5),int(ori_img.height*1.5)),Image.BILINEAR)
-	new_img.save(file_name + '@3x.' + file_type)
-        
-	#二倍图重命名
-	try:
-		os.rename(file_name + '.' + file_type,file_name + '@2x.' + file_type)
-	except Exception:
-		print('发生错误')
-	else:
-		pass
-	finally:
-		pass
+    #二倍图
+    ori_img.save(file_name + '@2x.' + file_type)
+
+    #三倍图
+    ori_img.resize((int(ori_img.width*1.5),int(ori_img.height*1.5)),Image.BILINEAR).save(file_name + '@3x.' + file_type)
 
 # 是否是需要扩展的图片
 def is_normal_image(file_name):
@@ -138,7 +129,7 @@ path = sys.argv[2]
 if action == 'scale_icon':
     scale_icon_image(path)
 elif action == 'scale_image':
-    png_files = glob.glob(r"*.png")
+    png_files = glob.glob(path+"/*.png")
     for img_file in png_files :
         file_name = img_file[:-4]
         if is_normal_image(file_name):
